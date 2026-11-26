@@ -19,7 +19,7 @@
     !function (f, b, e, v, n, t, s) {
       if (f.fbq) return; n = f.fbq = function () {
         n.callMethod ?
-        n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
       };
       if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
       n.queue = []; t = b.createElement(e); t.async = !0;
@@ -59,24 +59,120 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero-glow"></div>
-    <div class="container hero-inner">
-      <span class="badge">🚨 YOUR FREE XAUUSD COMMUNITY IS HERE!</span>
-      <h1>Want to follow daily<br /><span class="gradient-text">live market activity?</span></h1>
-      <ul class="hero-highlights">
-        <li><span class="highlight-icon" aria-hidden="true">🥇</span><span>XAUUSD ONLY</span></li>
-        <li><span class="highlight-icon" aria-hidden="true">🔥</span><span>FREE DAILY LIVE TRADING</span></li>
-        <li><span class="highlight-icon" aria-hidden="true">👥</span><span>OVER 40,000 MEMBERS</span></li>
-        <li><span class="highlight-icon" aria-hidden="true">☑</span><span>VERIFIED TRACK RECORD</span></li>
-        <li><span class="highlight-icon" aria-hidden="true">🏆</span><span>4 YEARS OF LIVE TRADING</span></li>
-      </ul>
-      <p class="hero-subtitle">
-        Thousands have joined. Come be part of the community!
-      </p>
-      <p class="hero-cta-prompt">👇 JOIN FREE TODAY!</p>
-      <a href="https://tracergram.com/j/6b07ec4ba32cbed423187d59" class="btn btn-primary btn-large pulse" data-cta-btn>
-        Join Now — It's Free
-        <span class="arrow">→</span>
-      </a>
+    <div class="container hero-container">
+      <div class="hero-layout">
+        <div class="hero-media hero-media-left">
+          <div class="video-card" data-video-card>
+            <video
+              class="video-player"
+              poster="assets/poster-left.jpg"
+              width="720"
+              height="1280"
+              autoplay
+              muted
+              loop
+              playsinline
+              webkit-playsinline
+              preload="metadata"
+              disablepictureinpicture
+              controlslist="nodownload"
+              aria-label="Alex G.A trading community preview video"
+            >
+              <source src="assets/video-left.mp4" type="video/mp4" />
+            </video>
+
+            <button
+              type="button"
+              class="video-sound-pill"
+              data-video-mute
+              aria-label="Unmute video"
+              aria-pressed="false"
+            >
+              <span class="sound-icon" aria-hidden="true">🔇</span>
+              <span class="sound-label">Tap for Sound</span>
+            </button>
+
+            <div class="video-spinner" data-video-spinner aria-hidden="true"></div>
+
+            <button
+              type="button"
+              class="video-center-play"
+              data-video-center-play
+              aria-label="Play video"
+            >
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+                <path d="M8 5.14v14l11-7-11-7z" />
+              </svg>
+            </button>
+
+            <div class="video-error" data-video-error hidden>
+              <p>Video couldn't load</p>
+              <button type="button" class="video-retry-btn" data-video-retry>Retry</button>
+            </div>
+
+            <div class="video-controls" data-video-controls>
+              <button
+                type="button"
+                class="video-ctrl-btn"
+                data-video-toggle
+                aria-label="Pause video"
+              >
+                <svg class="icon-pause" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                  <path d="M6 5h4v14H6zm8 0h4v14h-4z" />
+                </svg>
+                <svg class="icon-play" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </button>
+
+              <input
+                type="range"
+                class="video-progress"
+                data-video-progress
+                min="0"
+                max="100"
+                value="0"
+                step="0.1"
+                aria-label="Seek video"
+              />
+
+              <button
+                type="button"
+                class="video-ctrl-btn"
+                data-video-fullscreen
+                aria-label="Toggle fullscreen"
+              >
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                  <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-inner">
+          <span class="badge">🚨 YOUR FREE XAUUSD COMMUNITY IS HERE!</span>
+          <h1>Want to follow daily<br /><span class="gradient-text">live market activity?</span></h1>
+          <ul class="hero-highlights">
+            <li><span class="highlight-icon" aria-hidden="true">🥇</span><span>XAUUSD ONLY</span></li>
+            <li><span class="highlight-icon" aria-hidden="true">🔥</span><span>FREE DAILY LIVE TRADING</span></li>
+            <li><span class="highlight-icon" aria-hidden="true">👥</span><span>OVER 40,000 MEMBERS</span></li>
+            <li><span class="highlight-icon" aria-hidden="true">☑</span><span>VERIFIED TRACK RECORD</span></li>
+            <li><span class="highlight-icon" aria-hidden="true">🏆</span><span>4 YEARS OF LIVE TRADING</span></li>
+          </ul>
+          <p class="hero-subtitle">
+            Thousands have joined. Come be part of the community!
+          </p>
+          <p class="hero-cta-prompt">👇 JOIN FREE TODAY!</p>
+          <a href="https://tracergram.com/j/6b07ec4ba32cbed423187d59" class="btn btn-primary btn-large pulse" data-cta-btn>
+            Join Now — It's Free
+            <span class="arrow">→</span>
+          </a>
+        </div>
+
+        <!-- Reserved space for right-side video -->
+        <div class="hero-media hero-media-right" aria-hidden="true"></div>
+      </div>
     </div>
   </section>
 
