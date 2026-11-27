@@ -1,3 +1,87 @@
+// Auto-translate page based on ?lang= param or visitor's browser language (Google Translate).
+(function initAutoTranslate() {
+  const mapBrowserLang = (raw) => {
+    if (!raw || typeof raw !== "string") return "en";
+    const lower = raw.trim().toLowerCase().replace(/_/g, "-");
+    if (!lower) return "en";
+    if (lower.startsWith("zh")) {
+      return /-(tw|hk|mo|hant)/.test(lower) ? "zh-TW" : "zh-CN";
+    }
+    const base = lower.split("-")[0];
+    const aliases = {
+      he: "iw",
+      nb: "no",
+      nn: "no",
+      fil: "tl",
+    };
+    return aliases[base] || base;
+  };
+
+  const params = new URLSearchParams(window.location.search);
+  const queryLang = params.get("lang");
+  const browserLangs =
+    Array.isArray(navigator.languages) && navigator.languages.length
+      ? navigator.languages
+      : [navigator.language || navigator.userLanguage || "en"];
+
+  const targetLang = mapBrowserLang(queryLang || browserLangs[0]);
+
+  const setGoogTransCookie = (value) => {
+    const expires = value ? "" : "; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = `googtrans=${value}; path=/${expires}`;
+    const host = window.location.hostname;
+    if (host && host.includes(".") && !/^\d+(\.\d+)+$/.test(host)) {
+      document.cookie = `googtrans=${value}; path=/; domain=.${host}${expires}`;
+    }
+  };
+
+  // Skip loading Google Translate for English visitors (zero overhead).
+  if (!targetLang || targetLang === "en") {
+    setGoogTransCookie("");
+    return;
+  }
+
+  setGoogTransCookie(`/en/${targetLang}`);
+
+  window.googleTranslateElementInit = function () {
+    if (!window.google || !window.google.translate) return;
+    new window.google.translate.TranslateElement(
+      {
+        pageLanguage: "en",
+        autoDisplay: false,
+      },
+      "google_translate_element"
+    );
+
+    // Fallback: trigger the hidden dropdown directly if cookies are blocked.
+    let attempts = 0;
+    const timer = setInterval(() => {
+      attempts += 1;
+      const combo = document.querySelector("select.goog-te-combo");
+      if (combo && combo.options && combo.options.length > 1) {
+        clearInterval(timer);
+        if (combo.value !== targetLang) {
+          const hasOption = Array.from(combo.options).some(
+            (opt) => opt.value === targetLang
+          );
+          if (hasOption) {
+            combo.value = targetLang;
+            combo.dispatchEvent(new Event("change"));
+          }
+        }
+      } else if (attempts >= 40) {
+        clearInterval(timer);
+      }
+    }, 100);
+  };
+
+  const gtScript = document.createElement("script");
+  gtScript.src =
+    "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+  gtScript.async = true;
+  document.head.appendChild(gtScript);
+})();
+
 // Track Join Now clicks (all CTAs share the same link and Meta Pixel).
 document.addEventListener("DOMContentLoaded", () => {
   const joinButtons = document.querySelectorAll("[data-cta-btn]");
@@ -64,6 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let userPaused = false;
     let isSeeking = false;
+    let lastUnmuted = null;
 
     const syncState = () => {
       const paused = video.paused || video.ended;
@@ -78,8 +163,14 @@ document.addEventListener("DOMContentLoaded", () => {
         muteBtn.setAttribute("aria-pressed", String(unmuted));
         muteBtn.setAttribute("aria-label", unmuted ? "Mute video" : "Unmute video");
       }
-      if (soundIcon) soundIcon.textContent = unmuted ? "🔊" : "🔇";
-      if (soundLabel) soundLabel.textContent = unmuted ? "Sound On" : "Tap for Sound";
+      if (unmuted !== lastUnmuted) {
+        if (soundIcon) soundIcon.textContent = unmuted ? "🔊" : "🔇";
+        // Preserve initial text node on load so auto-translation isn't overwritten.
+        if (lastUnmuted !== null && soundLabel) {
+          soundLabel.textContent = unmuted ? "Sound On" : "Tap for Sound";
+        }
+        lastUnmuted = unmuted;
+      }
     };
 
     const safePlay = () => {
